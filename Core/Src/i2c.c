@@ -65,9 +65,8 @@ void MX_I2C1_Init(void)
   LL_I2C_Init(I2C1, &I2C_InitStruct);
   LL_I2C_SetOwnAddress2(I2C1, 0, LL_I2C_OWNADDRESS2_NOMASK);
   LL_I2C_Enable(I2C1);
-  /* USER CODE BEGIN I2C1_Init 2 */
-
-  void I2C_WriteData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length)
+}
+void I2C_WriteData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length)
   {
       /* Start the I2C write transfer with register address */
       LL_I2C_HandleTransfer(I2C1, slave_addr, LL_I2C_ADDRSLAVE_7BIT, length + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
@@ -82,9 +81,6 @@ void MX_I2C1_Init(void)
       while (!LL_I2C_IsActiveFlag_STOP(I2C1));
       LL_I2C_ClearFlag_STOP(I2C1);
   }
-  /* USER CODE END I2C1_Init 2 */
-
-}
 
 /* USER CODE BEGIN 1 */
 
