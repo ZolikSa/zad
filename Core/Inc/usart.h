@@ -37,6 +37,7 @@ extern "C" {
 /* USER CODE END Private defines */
 
 void MX_USART2_UART_Init(void);
+void USART2_RegisterCallback(void *callback);
 
 /* USER CODE BEGIN Prototypes */
 

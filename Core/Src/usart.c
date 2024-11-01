@@ -21,9 +21,6 @@
 #include "usart.h"
 
 /* Define buffer for DMA transfer to USART2 */
-uint8_t bufferUSART2dma[DMA_USART2_BUFFER_SIZE];
-
-
 static void (* USART2_ProcessData)(const uint8_t* data, uint16_t len) = 0;
 
 void USART2_RegisterCallback(void *callback)

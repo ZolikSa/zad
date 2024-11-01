@@ -21,19 +21,13 @@
 #include "i2c.h"
 
 /* USER CODE BEGIN 0 */
-
+I2C_Write_Callback I2C_Write = I2C_WriteData;
 /* USER CODE END 0 */
 
 /* I2C1 init function */
 void MX_I2C1_Init(void)
 {
-
-  /* USER CODE BEGIN I2C1_Init 0 */
-
-  /* USER CODE END I2C1_Init 0 */
-
   LL_I2C_InitTypeDef I2C_InitStruct = {0};
-
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOB);
@@ -56,12 +50,7 @@ void MX_I2C1_Init(void)
   NVIC_SetPriority(I2C1_EV_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
   NVIC_EnableIRQ(I2C1_EV_IRQn);
 
-  /* USER CODE BEGIN I2C1_Init 1 */
-
-  /* USER CODE END I2C1_Init 1 */
-
-  /** I2C Initialization
-  */
+  /** I2C Initialization*/
   LL_I2C_EnableAutoEndMode(I2C1);
   LL_I2C_DisableOwnAddress2(I2C1);
   LL_I2C_DisableGeneralCall(I2C1);
@@ -75,8 +64,24 @@ void MX_I2C1_Init(void)
   I2C_InitStruct.OwnAddrSize = LL_I2C_OWNADDRESS1_7BIT;
   LL_I2C_Init(I2C1, &I2C_InitStruct);
   LL_I2C_SetOwnAddress2(I2C1, 0, LL_I2C_OWNADDRESS2_NOMASK);
+  LL_I2C_Enable(I2C1);
   /* USER CODE BEGIN I2C1_Init 2 */
 
+  void I2C_WriteData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length)
+  {
+      /* Start the I2C write transfer with register address */
+      LL_I2C_HandleTransfer(I2C1, slave_addr, LL_I2C_ADDRSLAVE_7BIT, length + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
+      /* Transmit the register address */
+      LL_I2C_TransmitData8(I2C1, register_addr);
+
+      for (uint8_t i = 0; i < length; i++)
+      {
+          while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
+          LL_I2C_TransmitData8(I2C1, data[i]);
+      }
+      while (!LL_I2C_IsActiveFlag_STOP(I2C1));
+      LL_I2C_ClearFlag_STOP(I2C1);
+  }
   /* USER CODE END I2C1_Init 2 */
 
 }
