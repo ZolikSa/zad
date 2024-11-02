@@ -1,8 +1,5 @@
 #include "hts221.h"
 #include "i2c.h"
-
-#define HTS221_DEVICE_ADDRESS 0x5F  // Replace with actual I2C address
-
 // Device address for the HTS221 sensor
 uint8_t address = HTS221_DEVICE_ADDRESS;
 
@@ -25,18 +22,18 @@ uint8_t hts221_init(void)
     LL_mDelay(100);
 
     uint8_t who_am_i = 0;
-    hts221_readArray(HTS221_WHO_AM_I_ADDRES, &who_am_i, 1);
+    hts221_readArray(HTS221_WHO_AM_I_ADDRESS, &who_am_i, 1);
 
     if (who_am_i != HTS221_WHO_AM_I_VALUE)
     {
         status = 0;
     }
 
-    uint8_t ctrl1 = 0;
-    hts221_readArray(HTS221_ADDRESS_CTRL1, &ctrl1, 1);
-    ctrl1 &= 0x78;
-    ctrl1 |= 0x81;
-    hts221_writeArray(HTS221_ADDRESS_CTRL1, &ctrl1, 1);
+    uint8_t control_r = 0;
+    hts221_readArray(HTS221_ADDRESS_CONTROL_R, &control_r, 1);
+    control_r &= 0x78;
+    control_r |= 0x81;
+    hts221_writeArray(HTS221_ADDRESS_CONTROL_R, &control_r, 1);
 
     return status;
 }
