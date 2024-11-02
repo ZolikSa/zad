@@ -1,0 +1,1 @@
+LPS/LPS25HB.o: ../LPS/LPS25HB.c

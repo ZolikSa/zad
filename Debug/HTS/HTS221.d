@@ -1,0 +1,1 @@
+HTS/HTS221.o: ../HTS/HTS221.c
