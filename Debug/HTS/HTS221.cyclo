@@ -1,0 +1,5 @@
+../HTS/HTS221.c:7:6:hts221_readArray	1
+../HTS/HTS221.c:13:6:hts221_writeArray	1
+../HTS/HTS221.c:19:9:hts221_init	2
+../HTS/HTS221.c:42:8:hts221_get_humidity	1
+../HTS/HTS221.c:69:7:hts221_get_temperature	1

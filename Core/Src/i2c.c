@@ -70,18 +70,19 @@ void MX_I2C1_Init(void)
 
 void I2C_WriteData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length)
   {
-      /* Start the I2C write transfer with register address */
-      LL_I2C_HandleTransfer(I2C1, slave_addr, LL_I2C_ADDRSLAVE_7BIT, length + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
-      /* Transmit the register address */
-      LL_I2C_TransmitData8(I2C1, register_addr);
+	if (length == 0) return;
+    /* Start the I2C write transfer with register address */
+    LL_I2C_HandleTransfer(I2C1, slave_addr, LL_I2C_ADDRSLAVE_7BIT, length + 1, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_WRITE);
+    /* Transmit the register address */
+    LL_I2C_TransmitData8(I2C1, register_addr);
 
-      for (uint8_t i = 0; i < length; i++)
-      {
+    for (uint8_t i = 0; i < length; i++)
+     	 {
           while (!LL_I2C_IsActiveFlag_TXIS(I2C1));
           LL_I2C_TransmitData8(I2C1, data[i]);
-      }
-      while (!LL_I2C_IsActiveFlag_STOP(I2C1));
-      LL_I2C_ClearFlag_STOP(I2C1);
+     	 }
+    while (!LL_I2C_IsActiveFlag_STOP(I2C1));
+    LL_I2C_ClearFlag_STOP(I2C1);
   }
 
 void I2C_ReadData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length)
@@ -93,10 +94,10 @@ void I2C_ReadData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint
     LL_I2C_HandleTransfer(I2C1, slave_addr, LL_I2C_ADDRSLAVE_7BIT, length, LL_I2C_MODE_AUTOEND, LL_I2C_GENERATE_START_READ);
 
     for (uint8_t i = 0; i < length; i++)
-    {
+    	{
         while (!LL_I2C_IsActiveFlag_RXNE(I2C1));
         data[i] = LL_I2C_ReceiveData8(I2C1);
-    }
+    	}
     while (!LL_I2C_IsActiveFlag_STOP(I2C1));
     LL_I2C_ClearFlag_STOP(I2C1);
 }

@@ -1,4 +1,4 @@
-#include "hts221.h"
+#include "HTS221.h"
 #include "i2c.h"
 // Device address for the HTS221 sensor
 uint8_t address = HTS221_DEVICE_ADDRESS;

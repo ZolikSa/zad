@@ -1,0 +1,5 @@
+../LPS/LPS25HB.c:11:6:lps22hb_readArray	16	static
+../LPS/LPS25HB.c:17:6:lps22hb_writeArray	16	static
+../LPS/LPS25HB.c:23:9:lps22hb_init	16	static
+../LPS/LPS25HB.c:53:7:lps22hb_get_pressure	24	static
+../LPS/LPS25HB.c:65:7:lps22hb_get_temperature	24	static
