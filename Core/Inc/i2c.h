@@ -39,7 +39,8 @@ extern "C" {
 void MX_I2C1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void I2C_WriteData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length);
+void I2C_ReadData(uint8_t slave_addr, uint8_t register_addr, uint8_t *data, uint8_t length);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
