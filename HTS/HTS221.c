@@ -65,37 +65,5 @@ int8_t hts221_get_humidity(void)
     return total;
 }
 
-// Function to get the temperature value
-float hts221_get_temperature(void)
-{
-    uint8_t temperature[2];
-    hts221_readArray(HTS221_ADDRESS_TEMP_OUT_L, temperature, 2);
-    int16_t total_t = (temperature[1] << 8) | temperature[0];
-
-    uint8_t cal0[2], cal1[2];
-    hts221_readArray(HTS221_ADDRESS_T0_OUT_L, cal0, 2);
-    hts221_readArray(HTS221_ADDRESS_T1_OUT_L, cal1, 2);
-
-    int16_t total_cal0 = (cal0[1] << 8) | cal0[0];
-    int16_t total_cal1 = (cal1[1] << 8) | cal1[0];
-
-    uint8_t cal0_y_temp = 0, cal1_y_temp = 0;
-    hts221_readArray(HTS221_ADDRESS_T0_degC_x8, &cal0_y_temp, 1);
-    hts221_readArray(HTS221_ADDRESS_T1_degC_x8, &cal1_y_temp, 1);
-
-    uint8_t temp0 = 0, temp1 = 0;
-    hts221_readArray(HTS221_ADDRESS_T1T0_msb, &temp0, 1);
-    temp1 = temp0 >> 2 & 0x03;
-    temp0 &= 0x03;
-
-    int16_t cal0_y = (temp0 << 8) | cal0_y_temp;
-    int16_t cal1_y = (temp1 << 8) | cal1_y_temp;
-
-    float k = (float)(cal1_y - cal0_y) / (total_cal1 - total_cal0);
-    float q = (float)(cal1_y - k * total_cal1);
-    float total = (float)((k * total_t + q) / 8);
-
-    return total;
-}
 
 

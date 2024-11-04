@@ -37,10 +37,10 @@ uint8_t lps25hb_init(void)
         }
     }
 
-    uint8_t control = 0;
+    uint8_t control;
     lps25hb_readArray(LPS25HB_ADDRESS_CONTROL_R, &control, 1);
-    control &= ~0xFF;
-    control |= 0x18;
+    control &= 0x0F;
+    control |= 0x90;
     lps25hb_writeArray(LPS25HB_ADDRESS_CONTROL_R, &control, 1);
 
     return status;
@@ -52,8 +52,8 @@ float lps25hb_get_pressure(void)
     uint8_t pressure[3];
     lps25hb_readArray(LPS25HB_ADDRESS_PRESS_OUT_XL, pressure, 3);
 
-    int32_t temp = ((int32_t)pressure[2] << 16) | ((int32_t)pressure[1] << 8) | pressure[0];
-    float total_pressure = (float)temp / 4096;
+    int32_t temp = pressure[2] << 16 | pressure[1] << 8 | pressure[0];
+    float total_pressure = (float)temp / 4096.0;
 
     return total_pressure;
 }
@@ -64,8 +64,8 @@ float lps25hb_get_temperature(void)
     uint8_t temperature[2];
     lps25hb_readArray(LPS25HB_ADDRESS_TEMP_OUT_L, temperature, 2);
 
-    int16_t total_t = ((int16_t)temperature[1] << 8) | temperature[0];
-    float temp = (float)total_t / 100;
+    int16_t total_t = temperature[1] << 8 | temperature[0];
+    float temp = 42.5+((float)total_t / 480);
 
     return temp;
 }

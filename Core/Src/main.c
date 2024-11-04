@@ -34,6 +34,7 @@ uint8_t humidity = 0;
 float temperature = 0;
 float mag[3], acc[3];
 float pressure = 0;
+float refference = 0;
 float constant = 0.0342;
 float height = 0;
 float pressureatsealevel = 101325;
@@ -122,15 +123,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  refference = lps25hb_get_pressure();
+
   while (1)
   {
 	  pressure = lps25hb_get_pressure();
-	  T=lps25hb_get_temperature()+273.15;
-	  height = (-log((100*pressure/pressureatsealevel))*T)/constant;
-	  temperature=hts221_get_temperature();
+	  height = (float)44330.00 * (1-pow(pressure/refference,1/5.255));
+	  temperature=lps25hb_get_temperature();
 	  humidity=hts221_get_humidity();
 	  memset(formated_text, '\0', sizeof(formated_text));
-	  sprintf(formated_text, "\n Teplota: %.1f, Vlhkost: %d%% Tlak: %.2f, Vyska: %.2f\r", temperature,humidity,pressure, height);
+	  sprintf(formated_text, "%.1f,%d%,%.2f,%.2f\n\r", temperature,humidity,pressure, height);
 	  USART2_PutBuffer((uint8_t*)formated_text, strlen(formated_text));
 	  LL_mDelay(2000);
 
