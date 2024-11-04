@@ -1,18 +1,18 @@
 #include "HTS221.h"
 #include "i2c.h"
 // Device address for the HTS221 sensor
-uint8_t address = HTS221_DEVICE_ADDRESS;
+uint8_t addressh = HTS221_DEVICE_ADDRESS;
 
 // Function to read an array of bytes from the HTS221 sensor
 void hts221_readArray(uint8_t reg, uint8_t *data, uint8_t length)
 {
-    I2C_ReadData(address, reg, data, length);
+    I2C_ReadData(addressh, reg, data, length);
 }
 
 // Function to write an array of bytes to the HTS221 sensor
 void hts221_writeArray(uint8_t reg, uint8_t *data, uint8_t length)
 {
-    I2C_WriteData(address, reg, data, length);
+    I2C_WriteData(addressh, reg, data, length);
 }
 
 // Function to initialize the HTS221 sensor
